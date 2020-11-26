@@ -1,0 +1,1 @@
+All details of implementation described in JavaDocs and single-line comments in methods
