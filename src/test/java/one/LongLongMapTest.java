@@ -61,6 +61,24 @@ class LongLongMapTest {
     }
 
     @Test
+    void sizeNotPowerOfTwo() throws MapFullException {
+        final long bytes = (32 << 15) + 32;
+        final long startAddress = unsafe.allocateMemory(bytes);
+
+        final Random random = new Random();
+        final LongLongMap longLongMap = new LongLongMap(unsafe, startAddress, bytes);
+
+        for (long i = 1; i <= (bytes >> 5); ++i) {
+            final long key = random.nextLong();
+
+            final long value = key * key;
+            longLongMap.put(key, value);
+
+            Assertions.assertEquals(value, longLongMap.get(key));
+        }
+    }
+
+    @Test
     void stressTest() throws MapFullException {
         final long bytes = 32 << 15;
         final long startAddress = unsafe.allocateMemory(bytes);
@@ -69,7 +87,7 @@ class LongLongMapTest {
         final LongLongMap longLongMap = new LongLongMap(unsafe, startAddress, bytes);
 
         for (long i = 1; i <= (bytes >> 5); ++i) {
-            final long key = random.nextInt(Integer.MAX_VALUE);
+            final long key = random.nextLong();
 
             final long value = key * key;
             longLongMap.put(key, value);

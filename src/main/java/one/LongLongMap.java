@@ -304,7 +304,7 @@ public class LongLongMap {
     private LongUnaryOperator initHasher(long mapSize) {
         return ((mapSize - 1) & mapSize) == 0
                 ? value -> value & (mapSize - 1)
-                : value -> value % mapSize;
+                : value -> Math.abs(value) % mapSize;
     }
 
     @Override
